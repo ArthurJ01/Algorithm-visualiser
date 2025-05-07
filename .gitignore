@@ -11,20 +11,20 @@
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
+# Compiled Dynamic libraries (removed, don't know what im doing so maybe its bad)
+#*.so
+#*.dylib
+#*.dll
 
 # Fortran module files
 *.mod
 *.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Compiled Static libraries (removed, don't know what im doing so maybe its bad)
+#*.lai
+#*.la
+#*.a
+#*.lib
 
 # Executables
 *.exe
