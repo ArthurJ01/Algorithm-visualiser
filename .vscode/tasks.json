@@ -24,8 +24,14 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
+                "-I\"${workspaceFolder}/SFML-3.0.0/include\"",
+                "-DSFML_STATIC",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-L\"${workspaceFolder}/SFML-3.0.0/lib\"",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
             ],
             "options": {
                 "cwd": "${fileDirname}"
