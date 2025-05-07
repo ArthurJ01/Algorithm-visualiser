@@ -1,3 +1,7 @@
+# Good youtube tutorial
+this guy knows whats up:
+https://www.youtube.com/watch?v=Qqk9o2RIayw&list=PLkX_-fCkj2di5WrSIBE66j5Yq0xmHvpAv
+
 # Linking new libraries or whatever STATICALLY
 In tasks.json you have
 ```json
