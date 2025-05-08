@@ -6,7 +6,8 @@
 
 int main()
 {
-    std::vector<int> arr(20);
+
+    std::vector<int> arr(35);
     int arrSize = arr.size();
 
     for (int i = 0; i < arrSize; i++){
