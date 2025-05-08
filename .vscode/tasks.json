@@ -26,6 +26,7 @@
                 "${file}",
                 "-I\"${workspaceFolder}/SFML-3.0.0/include\"",
                 "-DSFML_STATIC",
+                "-Wall",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "-L\"${workspaceFolder}/SFML-3.0.0/lib\"",
