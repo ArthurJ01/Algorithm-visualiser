@@ -83,7 +83,28 @@ int main()
     }
 }
 
-void insertionSort(std::vector<int> &arr, int n)
+
+bool insertionSortStep(std::vector<int>& arr, int arraySize, int& i, int& j){
+
+if(i >= arraySize){
+    return true;
+}
+
+int key = arr[i];
+    if(j >= 0 && arr[j]>key){
+        arr[j + 1] = arr[j];
+        j = j -1;
+    }
+    if(j <= 0 && i < arraySize){
+        j = i -1;
+    }
+    arr[j + 1] = key;
+    i++;
+
+    return false;
+}
+
+void insertionSort(std::vector<int>& arr, int n)
 {
     for (int i = 1; i < n; ++i) {
         int key = arr[i];
