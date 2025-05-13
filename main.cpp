@@ -41,8 +41,8 @@ int main()
 
     std::vector<std::vector<int>> steps;
     std::vector<int> currentStep;
-    //insertionSort(arr, arrSize, steps);
-    mergeSort(arr, 0, arr.size() - 1, steps);
+    insertionSort(arr, arrSize, steps);
+    //mergeSort(arr, 0, arr.size() - 1, steps);
     long long unsigned step = 0;
     currentStep = steps.at(step);
 
