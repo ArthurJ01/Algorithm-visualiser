@@ -11,9 +11,9 @@ int main()
 {
 
     float rectangleSizeX = 10.f;
-
-    std::vector<int> arr(35);
-    int arrSize = arr.size();
+    int arrSize = 35;
+    int maxValue = arrSize;
+    std::vector<int> arr(arrSize);
 
     for (int i = 0; i < arrSize; i++){
         arr[i] = i + 1;
@@ -29,19 +29,20 @@ int main()
 
     std::vector<sf::RectangleShape> rectangleList(arrSize);
 
+    //set up initial rectangles
     for (int i = 0; i < arrSize; i++){
-
         float height = -10.f * arr[i];
         sf::RectangleShape rectangle({rectangleSizeX, height});
         float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
-        rectangle.setPosition({currentXPosition, 400.f});
+        rectangle.setPosition({currentXPosition, window.getSize().y});
         window.draw(rectangle);
         rectangleList[i] = rectangle;
     }
 
     std::vector<std::vector<int>> steps;
     std::vector<int> currentStep;
-    insertionSort(arr, arrSize, steps);
+    //insertionSort(arr, arrSize, steps);
+    mergeSort(arr, 0, arr.size() - 1, steps);
     long long unsigned step = 0;
     currentStep = steps.at(step);
 
@@ -57,12 +58,10 @@ int main()
         window.clear(sf::Color(0,0,0));
         
         for (int i = 0; i < arrSize; i++){
-
-            float height = -10.f * currentStep.at(i);
+            float windowSizeY = window.getSize().y;
+            float height = -(windowSizeY/maxValue) * currentStep.at(i);
             sf::RectangleShape rectangle = rectangleList[i];
             rectangle.setSize({rectangleSizeX, height});
-            float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
-            rectangle.setPosition({currentXPosition, 400.f});
             window.draw(rectangle);
         }
 
