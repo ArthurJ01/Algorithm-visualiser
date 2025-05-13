@@ -3,8 +3,10 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <iostream>
+#include <thread>
 
-void insertionSort(std::vector<int> &arr, int n);
+void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& steps);
 
 /*
 First set up an array, shuffle it and then create window and a list of rectangles of same size as array (array is vector)
@@ -55,6 +57,12 @@ int main()
         rectangleList[i] = rectangle;
     }
 
+    std::vector<std::vector<int>> steps;
+    std::vector<int> currentStep;
+    insertionSort(arr, arrSize, steps);
+    int step = 0;
+    currentStep = steps.at(step);
+
     //loop to keep open
     while(window.isOpen()){
 
@@ -65,12 +73,10 @@ int main()
         }
         //fill display with black
         window.clear(sf::Color(0,0,0));
-
-        insertionSort(arr, arrSize);
         
         for (int i = 0; i < arrSize; i++){
 
-            float height = -10.f * arr[i];
+            float height = -10.f * currentStep.at(i);
             sf::RectangleShape rectangle = rectangleList[i];
             rectangle.setSize({rectangleSizeX, height});
             float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
@@ -80,10 +86,34 @@ int main()
 
         //display what is set up
         window.display();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        step++;
+        if(step > steps.size() - 1){
+            step = steps.size() - 1;
+        }
+        currentStep = steps.at(step);
     }
 }
 
+void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& steps)
+{
+    for (int i = 1; i < n; ++i) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+            steps.push_back(arr);
+        }
+        arr[j + 1] = key;
+        steps.push_back(arr);
+    }
+}
 
+//the garbage zone
+
+
+/*
 bool insertionSortStep(std::vector<int>& arr, int arraySize, int& i, int& j){
 
 if(i >= arraySize){
@@ -103,16 +133,4 @@ int key = arr[i];
 
     return false;
 }
-
-void insertionSort(std::vector<int>& arr, int n)
-{
-    for (int i = 1; i < n; ++i) {
-        int key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-        arr[j + 1] = key;
-    }
-}
+*/
