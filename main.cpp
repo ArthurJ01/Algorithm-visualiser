@@ -5,8 +5,9 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include "headers/sorting.hpp"
 
-void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& steps);
+//void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& steps);
 
 /*
 First set up an array, shuffle it and then create window and a list of rectangles of same size as array (array is vector)
@@ -60,7 +61,7 @@ int main()
     std::vector<std::vector<int>> steps;
     std::vector<int> currentStep;
     insertionSort(arr, arrSize, steps);
-    int step = 0;
+    long long unsigned step = 0;
     currentStep = steps.at(step);
 
     //loop to keep open
@@ -94,7 +95,7 @@ int main()
         currentStep = steps.at(step);
     }
 }
-
+/*
 void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& steps)
 {
     for (int i = 1; i < n; ++i) {
@@ -109,7 +110,7 @@ void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& 
         steps.push_back(arr);
     }
 }
-
+*/
 //the garbage zone
 
 
