@@ -21,8 +21,8 @@ int main()
     //create window, get size (size should probably be taken in main every frame)
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
 
-    insertionSort(arr, arrSize, steps);
-    //mergeSort(arr, 0, arrSize - 1, steps);
+    //insertionSort(arr, arrSize, steps);
+    mergeSort(arr, 0, arrSize - 1, steps);
 
     long long unsigned step = 0;
     steps.push_back(arr);
@@ -44,10 +44,16 @@ int main()
         //display what is set up
         window.display();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        step++;
-        if(step > steps.size() - 1){
-            step = steps.size() - 1;
+
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+            step++;
+            if(step > steps.size() - 1){
+                step = steps.size() - 1;
+            }
+
         }
+
         currentStep = steps.at(step);
+
     }
 }
