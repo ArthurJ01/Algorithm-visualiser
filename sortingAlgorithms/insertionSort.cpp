@@ -1,4 +1,4 @@
-#include "headers/sorting.hpp"
+#include "../headers/sorting.hpp"
 #include <vector>
 
 void insertionSort(std::vector<int>& arr, int n, std::vector<std::vector<int>>& steps)
