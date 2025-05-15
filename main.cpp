@@ -7,12 +7,11 @@
 #include <thread>
 #include "headers/sorting.hpp"
 
+void drawRectangles(std::vector<sf::RectangleShape> rectangleList, std::vector<int> currentStep, sf::RenderWindow& window);
+
 int main()
 {
-
-    float rectangleSizeX = 10.f;
     int arrSize = 35;
-    int maxValue = arrSize;
     std::vector<int> arr(arrSize);
 
     for (int i = 0; i < arrSize; i++){
@@ -25,26 +24,17 @@ int main()
 
     //create window, get size (size should probably be taken in main every frame)
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
-    float windowSizeX = window.getSize().x;
 
     std::vector<sf::RectangleShape> rectangleList(arrSize);
-
-    //set up initial rectangles
-    for (int i = 0; i < arrSize; i++){
-        float height = -10.f * arr[i];
-        sf::RectangleShape rectangle({rectangleSizeX, height});
-        float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
-        rectangle.setPosition({currentXPosition, window.getSize().y});
-        window.draw(rectangle);
-        rectangleList[i] = rectangle;
-    }
-
     std::vector<std::vector<int>> steps;
     std::vector<int> currentStep;
     insertionSort(arr, arrSize, steps);
     //mergeSort(arr, 0, arr.size() - 1, steps);
     long long unsigned step = 0;
+    steps.push_back(arr);
     currentStep = steps.at(step);
+
+    drawRectangles(rectangleList, currentStep, window);
 
     //loop to keep open
     while(window.isOpen()){
@@ -57,13 +47,7 @@ int main()
         //fill display with black
         window.clear(sf::Color(0,0,0));
         
-        for (int i = 0; i < arrSize; i++){
-            float windowSizeY = window.getSize().y;
-            float height = -(windowSizeY/maxValue) * currentStep.at(i);
-            sf::RectangleShape rectangle = rectangleList[i];
-            rectangle.setSize({rectangleSizeX, height});
-            window.draw(rectangle);
-        }
+        drawRectangles(rectangleList, currentStep, window);
 
         //display what is set up
         window.display();
@@ -73,5 +57,27 @@ int main()
             step = steps.size() - 1;
         }
         currentStep = steps.at(step);
+    }
+}
+
+//assumes maxValue is the size of array, should be fine for how it's used before
+void drawRectangles(std::vector<sf::RectangleShape> rectangleList, std::vector<int> currentStep, sf::RenderWindow& window){
+    
+    int arrSize = currentStep.size();
+    int maxValue = arrSize;
+    
+    for (int i = 0; i < arrSize; i++){
+        float windowSizeY = window.getSize().y;
+        float windowSizeX = window.getSize().x;
+        float height = -(windowSizeY/maxValue) * currentStep.at(i);
+
+        sf::RectangleShape rectangle = rectangleList[i];
+        rectangle.setSize({10.f, height});
+
+        //this is useless after first call, but I don't feel like doing 2 functions
+        float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
+        rectangle.setPosition({currentXPosition, window.getSize().y});
+
+        window.draw(rectangle);
     }
 }
