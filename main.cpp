@@ -5,7 +5,8 @@
 
 #include "headers/sorting.hpp"
 #include "headers/draw.hpp"
-#include "initialize.hpp"
+#include "headers/initialize.hpp"
+#include "headers/stepStruct.hpp"
 
 int main()
 {
@@ -18,9 +19,11 @@ int main()
 
     std::vector<int> arr(arrSize);
     std::vector<sf::RectangleShape> rectangleList(arrSize);
-    std::vector<std::vector<int>> steps;
-    std::vector<int> currentStep;
 
+
+    std::vector<stepStruct> steps;
+    //std::vector<std::vector<int>> steps;
+    
     initialize(arr, arrSize);
 
     //create window, get size (size should probably be taken in main every frame)
@@ -29,9 +32,9 @@ int main()
     insertionSort(arr, arrSize, steps);
     //mergeSort(arr, 0, arrSize - 1, steps);
 
-    long long unsigned step = 0;
-    steps.push_back(arr);
-    currentStep = steps.at(step);
+    long long unsigned stepIndex = 0;
+    steps.emplace_back(arr, 0, 0);
+    stepStruct currentStepStruct = steps.at(stepIndex);
 
     //loop to keep open
     while(window.isOpen()){
@@ -44,15 +47,15 @@ int main()
         //fill display with black
         window.clear(sf::Color(0,0,0));
         
-        drawRectangles(rectangleList, currentStep, window);
+        drawRectangles(rectangleList, currentStepStruct, window);
 
         //display what is set up
         window.display();
 
         bool isLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
         if(isLeftPressed && !wasLeftPressed){
-            if(step < steps.size() - 1){
-                step++;
+            if(stepIndex < steps.size() - 1){
+                stepIndex++;
             }
 
         }
@@ -60,8 +63,8 @@ int main()
 
         bool isRightPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
         if(isRightPressed && !wasRightPressed){
-            if(step >= 1){
-                step--;
+            if(stepIndex >= 1){
+                stepIndex--;
             }
 
         }
@@ -69,20 +72,20 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
         {
-            if(step < steps.size() - 1){
-                step++;
+            if(stepIndex < steps.size() - 1){
+                stepIndex++;
             }
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         {
-            if(step >= 1){
-                step--;
+            if(stepIndex >= 1){
+                stepIndex--;
             }
         }
                 
 
-        currentStep = steps.at(step);
+        currentStepStruct = steps.at(stepIndex);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     }

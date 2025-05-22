@@ -2,10 +2,12 @@
 #include <SFML/Graphics.hpp>
 
 #include "headers/draw.hpp"
+#include "headers/stepStruct.hpp"
 
 //assumes maxValue is the size of array, should be fine for how it's used before
-void drawRectangles(std::vector<sf::RectangleShape> rectangleList, std::vector<int> currentStep, sf::RenderWindow& window){
+void drawRectangles(std::vector<sf::RectangleShape> rectangleList, stepStruct currentStepStruct, sf::RenderWindow& window){
     
+    std::vector<int> currentStep = currentStepStruct.step;
     int arrSize = currentStep.size();
     int maxValue = arrSize;
     
@@ -16,6 +18,16 @@ void drawRectangles(std::vector<sf::RectangleShape> rectangleList, std::vector<i
 
         sf::RectangleShape rectangle = rectangleList[i];
         rectangle.setSize({10.f, height});
+
+        if(i == currentStepStruct.keyIndex){
+            rectangle.setFillColor(sf::Color::Red);
+        } else if(i == currentStepStruct.comparatorIndex){
+            rectangle.setFillColor(sf::Color::Green);
+        }
+        else{
+            rectangle.setFillColor(sf::Color::White);
+        }
+
 
         //this is useless after first call, but I don't feel like doing 2 functions
         float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
