@@ -2,7 +2,7 @@
 #include <vector>
 
 
-void merge(std::vector<int>& arr, int left, int mid, int right, std::vector<std::vector<int>>& steps)
+void merge(std::vector<int>& arr, int left, int mid, int right, std::vector<stepStruct>& allSteps)
 {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -25,12 +25,12 @@ void merge(std::vector<int>& arr, int left, int mid, int right, std::vector<std:
         if (L[i] <= R[j]) {
             arr[k] = L[i];
             i++;
-            steps.push_back(arr);
+            allSteps.emplace_back(arr, k, left + i);
         }
         else {
             arr[k] = R[j];
             j++;
-            steps.push_back(arr);
+            allSteps.emplace_back(arr, k, mid + 1 + j);
         }
         k++;
     }
@@ -41,7 +41,7 @@ void merge(std::vector<int>& arr, int left, int mid, int right, std::vector<std:
         arr[k] = L[i];
         i++;
         k++;
-        steps.push_back(arr);
+        allSteps.emplace_back(arr, k, left + i);
     }
 
     // Copy the remaining elements of R[], 
@@ -50,19 +50,19 @@ void merge(std::vector<int>& arr, int left, int mid, int right, std::vector<std:
         arr[k] = R[j];
         j++;
         k++;
-        steps.push_back(arr);
+        allSteps.emplace_back(arr, k, mid + 1 + j);
     }
 }
 
 // begin is for left index and end is right index
 // of the sub-array of arr to be sorted
-void mergeSort(std::vector<int>& arr, int left, int right, std::vector<std::vector<int>>& steps)
+void mergeSort(std::vector<int>& arr, int left, int right, std::vector<stepStruct>& allSteps)
 {
     if (left >= right)
         return;
 
     int mid = left + (right - left) / 2;
-    mergeSort(arr, left, mid, steps);
-    mergeSort(arr, mid + 1, right, steps);
-    merge(arr, left, mid, right, steps);
+    mergeSort(arr, left, mid, allSteps);
+    mergeSort(arr, mid + 1, right, allSteps);
+    merge(arr, left, mid, right, allSteps);
 }

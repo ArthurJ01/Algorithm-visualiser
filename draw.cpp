@@ -19,7 +19,11 @@ void drawRectangles(std::vector<sf::RectangleShape> rectangleList, stepStruct cu
         sf::RectangleShape rectangle = rectangleList[i];
         rectangle.setSize({10.f, height});
 
-        if(i == currentStepStruct.keyIndex){
+
+        if(i == currentStepStruct.keyIndex && i == currentStepStruct.comparatorIndex){
+            rectangle.setFillColor(sf::Color::Yellow);
+        }
+        else if(i == currentStepStruct.keyIndex){
             rectangle.setFillColor(sf::Color::Red);
         } else if(i == currentStepStruct.comparatorIndex){
             rectangle.setFillColor(sf::Color::Green);

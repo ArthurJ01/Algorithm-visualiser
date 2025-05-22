@@ -29,8 +29,8 @@ int main()
     //create window, get size (size should probably be taken in main every frame)
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
 
-    insertionSort(arr, arrSize, steps);
-    //mergeSort(arr, 0, arrSize - 1, steps);
+    //insertionSort(arr, arrSize, steps);
+    mergeSort(arr, 0, arrSize - 1, steps);
 
     long long unsigned stepIndex = 0;
     steps.emplace_back(arr, 0, 0);
