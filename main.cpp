@@ -8,23 +8,24 @@
 #include "headers/initialize.hpp"
 #include "headers/stepStruct.hpp"
 
-void runSortAlgo(sf::RenderWindow& window, std::string algoToRun);
+enum class SortingAlgorithm { insertionSort, mergeSort };
+void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun);
 
 int main()
 {
 
-    std::string algoToRun = "insertionSort";
+    SortingAlgorithm algoToRun = SortingAlgorithm::insertionSort;
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
 
     //loop to keep open
     while(window.isOpen()){
         runSortAlgo(window, algoToRun);
+
         window.clear(sf::Color(0,0,0));
-        std::this_thread::sleep_for(std::chrono::seconds(10));  
     }
 }
 
-void runSortAlgo(sf::RenderWindow& window, std::string algoToRun){
+void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun){
 
     //click logic
     bool wasLeftPressed = false;
@@ -38,12 +39,14 @@ void runSortAlgo(sf::RenderWindow& window, std::string algoToRun){
     long long unsigned stepIndex = 0;
     steps.emplace_back(arr, 0, 0);
 
-    if(algoToRun == "insertionSort"){
+
+    if (algoToRun == SortingAlgorithm::insertionSort) {
         insertionSort(arr, arrSize, steps);
     }
-    else if(algoToRun == "mergeSort"){
+    else if (algoToRun == SortingAlgorithm::mergeSort) {
         mergeSort(arr, 0, arrSize - 1, steps);
     }
+
     stepStruct currentStepStruct = steps.at(stepIndex);
 
     while(!algorithmIsDone){
