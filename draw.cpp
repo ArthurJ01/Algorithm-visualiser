@@ -5,7 +5,7 @@
 #include "headers/stepStruct.hpp"
 
 //assumes maxValue is the size of array, should be fine for how it's used before
-void drawRectangles(std::vector<sf::RectangleShape> rectangleList, stepStruct currentStepStruct, sf::RenderWindow& window){
+void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){
     
     std::vector<int> currentStep = currentStepStruct.step;
     int arrSize = currentStep.size();
@@ -16,7 +16,7 @@ void drawRectangles(std::vector<sf::RectangleShape> rectangleList, stepStruct cu
         float windowSizeX = window.getSize().x;
         float height = -(windowSizeY/maxValue) * currentStep.at(i);
 
-        sf::RectangleShape rectangle = rectangleList[i];
+        sf::RectangleShape rectangle;
         rectangle.setSize({10.f, height});
 
 

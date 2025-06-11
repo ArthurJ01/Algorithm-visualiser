@@ -47,6 +47,61 @@ int main()
         //fill display with black
         window.clear(sf::Color(0,0,0));
         
+        drawRectangles(currentStepStruct, window);
+
+        //display what is set up
+        window.display();
+
+        bool isLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+        if(isLeftPressed && !wasLeftPressed){
+            if(stepIndex < steps.size() - 1){
+                stepIndex++;
+            }
+
+        }
+        wasLeftPressed = isLeftPressed;
+
+        bool isRightPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
+        if(isRightPressed && !wasRightPressed){
+            if(stepIndex >= 1){
+                stepIndex--;
+            }
+
+        }
+        wasRightPressed = isRightPressed;
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        {
+            if(stepIndex < steps.size() - 1){
+                stepIndex++;
+            }
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+        {
+            if(stepIndex >= 1){
+                stepIndex--;
+            }
+        }
+                
+
+        currentStepStruct = steps.at(stepIndex);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+    }
+}
+/*
+void runSortAlgo(sf::RenderWindow window){
+     while(window.isOpen()){
+
+        while (const std::optional event = window.pollEvent()){
+            if(event->is<sf::Event::Closed>()){
+                window.close();
+            }
+        }
+        //fill display with black
+        window.clear(sf::Color(0,0,0));
+        
         drawRectangles(rectangleList, currentStepStruct, window);
 
         //display what is set up
@@ -90,3 +145,4 @@ int main()
 
     }
 }
+*/

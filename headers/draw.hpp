@@ -4,4 +4,4 @@
 #include <SFML/Graphics.hpp>
 #include "./stepStruct.hpp"
 
-void drawRectangles(std::vector<sf::RectangleShape> rectangleList, stepStruct currentStepStruct, sf::RenderWindow& window);
+void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window);
