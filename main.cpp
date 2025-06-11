@@ -8,50 +8,42 @@
 #include "headers/initialize.hpp"
 #include "headers/stepStruct.hpp"
 
-void runSortAlgo(sf::RenderWindow& window, std::vector<stepStruct>& steps);
+void runSortAlgo(sf::RenderWindow& window, std::string algoToRun);
 
 int main()
 {
 
-    std::string currentAlgo = "insertionSort";
-
-    int arrSize = 35;
-
-    std::vector<int> arr(arrSize);
-
-    std::vector<stepStruct> steps;
-    
-    initialize(arr, arrSize);
-
-    //create window, get size (size should probably be taken in main every frame)
+    std::string algoToRun = "insertionSort";
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
-
-    long long unsigned stepIndex = 0;
-    steps.emplace_back(arr, 0, 0);
-
-    if(currentAlgo == "insertionSort"){
-        insertionSort(arr, arrSize, steps);
-    }
-    else if(currentAlgo == "mergeSort"){
-        mergeSort(arr, 0, arrSize - 1, steps);
-    }
 
     //loop to keep open
     while(window.isOpen()){
-        runSortAlgo(window, steps);
+        runSortAlgo(window, algoToRun);
         window.clear(sf::Color(0,0,0));
         std::this_thread::sleep_for(std::chrono::seconds(10));  
     }
 }
 
-void runSortAlgo(sf::RenderWindow& window, std::vector<stepStruct>& steps){
+void runSortAlgo(sf::RenderWindow& window, std::string algoToRun){
 
     //click logic
     bool wasLeftPressed = false;
     bool wasRightPressed = false;
     bool algorithmIsDone = false;
 
-    int stepIndex = 0;
+    int arrSize = 35;
+    std::vector<int> arr(arrSize);
+    std::vector<stepStruct> steps;
+    initialize(arr, arrSize);
+    long long unsigned stepIndex = 0;
+    steps.emplace_back(arr, 0, 0);
+
+    if(algoToRun == "insertionSort"){
+        insertionSort(arr, arrSize, steps);
+    }
+    else if(algoToRun == "mergeSort"){
+        mergeSort(arr, 0, arrSize - 1, steps);
+    }
     stepStruct currentStepStruct = steps.at(stepIndex);
 
     while(!algorithmIsDone){
