@@ -9,19 +9,61 @@
 #include "headers/stepStruct.hpp"
 
 enum class SortingAlgorithm { insertionSort, mergeSort };
+enum class Windows { menu, sorting};
 void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun);
 
 int main()
 {
-
+    Windows currentWindow = Windows::menu;
     SortingAlgorithm algoToRun = SortingAlgorithm::insertionSort;
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
 
+    sf::Font font("C:/Windows/fonts/arial.ttf");
+
+    sf::Text text(font); // a font is required to make a text object
+
+    // set the string to display
+    text.setString("menu ");
+
+    // set the character size
+    text.setCharacterSize(24); // in pixels, not points!
+
+    // set the color
+    text.setFillColor(sf::Color::Red);
+
+    // set the text style
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
     //loop to keep open
     while(window.isOpen()){
-        runSortAlgo(window, algoToRun);
 
-        window.clear(sf::Color(0,0,0));
+        while (const std::optional event = window.pollEvent()){
+            if(event->is<sf::Event::Closed>()){
+                window.close();
+            }
+            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            {
+                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape){
+                    currentWindow = Windows::sorting;
+                }
+            }  
+        }
+        switch (currentWindow){
+            case Windows::menu:
+
+                window.clear(sf::Color(255,255,255));
+                // inside the main loop, between window.clear() and window.display()
+                window.draw(text);
+                window.display();
+
+            break;
+            case Windows::sorting:
+                runSortAlgo(window, algoToRun);
+                currentWindow = Windows::menu;
+                window.clear(sf::Color(255,255,255));
+                window.display();
+            break;
+        }
     }
 }
 
@@ -49,7 +91,7 @@ void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun){
 
     stepStruct currentStepStruct = steps.at(stepIndex);
 
-    while(!algorithmIsDone){
+    while(!algorithmIsDone && window.isOpen()){
 
         while (const std::optional event = window.pollEvent()){
             if(event->is<sf::Event::Closed>()){
@@ -58,7 +100,7 @@ void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun){
             else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
             if (keyPressed->scancode == sf::Keyboard::Scancode::Escape){
-                algorithmIsDone = true;
+                return;
             }
         }  
         }
