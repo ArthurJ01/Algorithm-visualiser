@@ -18,21 +18,32 @@ int main()
     SortingAlgorithm algoToRun = SortingAlgorithm::insertionSort;
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
 
+    //TODO: import a font to the project or smth (maybe it can be like this though)
     sf::Font font("C:/Windows/fonts/arial.ttf");
 
     sf::Text text(font); // a font is required to make a text object
-
-    // set the string to display
     text.setString("menu ");
-
-    // set the character size
     text.setCharacterSize(24); // in pixels, not points!
-
-    // set the color
     text.setFillColor(sf::Color::Red);
-
-    // set the text style
     text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+   sf::RectangleShape insertionSortButton({200.f, 100.f});
+   insertionSortButton.setPosition({100.f, 50.f}); 
+
+    sf::Text insertionButtonText (font); // a font is required to make a text object
+    insertionButtonText.setString("insertion sort ");
+    insertionButtonText.setCharacterSize(24);
+    insertionButtonText.setFillColor(sf::Color::Red);
+    insertionButtonText.setPosition({insertionSortButton.getPosition().x * 1.2, insertionSortButton.getPosition().y * 1.2});
+
+    sf::RectangleShape MergeSortButton({200.f, 100.f});
+    MergeSortButton.setPosition({100.f, 200.f}); 
+
+    sf::Text mergeButtonText (font); // a font is required to make a text object
+    mergeButtonText.setString("merge sort ");
+    mergeButtonText.setCharacterSize(24);
+    mergeButtonText.setFillColor(sf::Color::Red);
+    mergeButtonText.setPosition({MergeSortButton.getPosition().x * 1.2, MergeSortButton.getPosition().y * 1.2});
 
     //loop to keep open
     while(window.isOpen()){
@@ -49,20 +60,52 @@ int main()
             }  
         }
         switch (currentWindow){
-            case Windows::menu:
+            case Windows::menu: {
 
-                window.clear(sf::Color(255,255,255));
-                // inside the main loop, between window.clear() and window.display()
+                window.clear(sf::Color(100,100,100));
+
+                sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+
+                if(insertionSortButton.getGlobalBounds().contains(mouse_position)){
+                    insertionSortButton.setFillColor(sf::Color::Yellow);
+                    if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+                        currentWindow = Windows::sorting;
+                        algoToRun = SortingAlgorithm::insertionSort;
+                    } 
+                }
+                else{
+                    insertionSortButton.setFillColor(sf::Color::White);
+                }
+
+                if(MergeSortButton.getGlobalBounds().contains(mouse_position)){
+                    MergeSortButton.setFillColor(sf::Color::Yellow);
+                    if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+                        currentWindow = Windows::sorting;
+                        algoToRun = SortingAlgorithm::mergeSort;
+                    } 
+                }
+                else{
+                    MergeSortButton.setFillColor(sf::Color::White);
+                }
+
+
+
+                window.draw(insertionSortButton);
+                window.draw(MergeSortButton);
+                window.draw(insertionButtonText);
+                window.draw(mergeButtonText);
                 window.draw(text);
                 window.display();
 
-            break;
-            case Windows::sorting:
+                break;
+            }
+            case Windows::sorting: {
+                //run sorting algo and when it is done, go back to menu
                 runSortAlgo(window, algoToRun);
                 currentWindow = Windows::menu;
-                window.clear(sf::Color(255,255,255));
-                window.display();
-            break;
+                break;
+            }
+
         }
     }
 }
