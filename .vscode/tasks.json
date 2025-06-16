@@ -30,6 +30,7 @@
                 "main.cpp",
                 "sortingAlgorithms/insertionSort.cpp",
                 "sortingAlgorithms/mergeSort.cpp",
+                "sortingAlgorithms/sortingVisualiser.cpp",
                 "draw.cpp",
                 "initialize.cpp",
                 "-Iheaders",

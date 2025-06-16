@@ -7,10 +7,9 @@
 #include "headers/draw.hpp"
 #include "headers/initialize.hpp"
 #include "headers/stepStruct.hpp"
+#include "headers/sortingVisualiser.hpp"
 
-enum class SortingAlgorithm { insertionSort, mergeSort };
 enum class Windows { menu, sorting};
-void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun);
 
 int main()
 {
@@ -34,7 +33,12 @@ int main()
     insertionButtonText.setString("insertion sort ");
     insertionButtonText.setCharacterSize(24);
     insertionButtonText.setFillColor(sf::Color::Red);
-    insertionButtonText.setPosition({insertionSortButton.getPosition().x * 1.2, insertionSortButton.getPosition().y * 1.2});
+    {
+        float position_x = insertionSortButton.getPosition().x + (insertionSortButton.getSize().x / 2);
+        float position_y = insertionSortButton.getPosition().y + (insertionSortButton.getSize().y / 2);
+        insertionButtonText.setPosition({position_x, position_y});
+    }
+
 
     sf::RectangleShape MergeSortButton({200.f, 100.f});
     MergeSortButton.setPosition({100.f, 200.f}); 
@@ -43,7 +47,11 @@ int main()
     mergeButtonText.setString("merge sort ");
     mergeButtonText.setCharacterSize(24);
     mergeButtonText.setFillColor(sf::Color::Red);
-    mergeButtonText.setPosition({MergeSortButton.getPosition().x * 1.2, MergeSortButton.getPosition().y * 1.2});
+    {
+        float position_x = MergeSortButton.getPosition().x + (MergeSortButton.getSize().x / 2);
+        float position_y = MergeSortButton.getPosition().y + (MergeSortButton.getSize().y / 2);
+        mergeButtonText.setPosition({position_x, position_y});
+    }
 
     //loop to keep open
     while(window.isOpen()){
@@ -110,141 +118,3 @@ int main()
     }
 }
 
-void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun){
-
-    //click logic
-    bool wasLeftPressed = false;
-    bool wasRightPressed = false;
-    bool algorithmIsDone = false;
-
-    int arrSize = 35;
-    std::vector<int> arr(arrSize);
-    std::vector<stepStruct> steps;
-    initialize(arr, arrSize);
-    long long unsigned stepIndex = 0;
-    steps.emplace_back(arr, 0, 0);
-
-
-    if (algoToRun == SortingAlgorithm::insertionSort) {
-        insertionSort(arr, arrSize, steps);
-    }
-    else if (algoToRun == SortingAlgorithm::mergeSort) {
-        mergeSort(arr, 0, arrSize - 1, steps);
-    }
-
-    stepStruct currentStepStruct = steps.at(stepIndex);
-
-    while(!algorithmIsDone && window.isOpen()){
-
-        while (const std::optional event = window.pollEvent()){
-            if(event->is<sf::Event::Closed>()){
-                window.close();
-            }
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-        {
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Escape){
-                return;
-            }
-        }  
-        }
-        //fill display with black
-        window.clear(sf::Color(0,0,0));
-        
-        drawRectangles(currentStepStruct, window);
-
-        //display what is set up
-        window.display();
-
-        bool isLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-        if(isLeftPressed && !wasLeftPressed){
-            if(stepIndex < steps.size() - 1){
-                stepIndex++;
-            }
-
-        }
-        wasLeftPressed = isLeftPressed;
-
-        bool isRightPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
-        if(isRightPressed && !wasRightPressed){
-            if(stepIndex >= 1){
-                stepIndex--;
-            }
-
-        }
-        wasRightPressed = isRightPressed;
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        {
-            if(stepIndex < steps.size() - 1){
-                stepIndex++;
-            }
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-        {
-            if(stepIndex >= 1){
-                stepIndex--;
-            }
-        }
-                
-
-        currentStepStruct = steps.at(stepIndex);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10)); 
-
-    }
-}
-
-/*
- while(window.isOpen()){
-
-        while (const std::optional event = window.pollEvent()){
-            if(event->is<sf::Event::Closed>()){
-                window.close();
-            }
-        }
-        //fill display with black
-        window.clear(sf::Color(0,0,0));
-        
-        drawRectangles(currentStepStruct, window);
-
-        //display what is set up
-        window.display();
-
-        bool isLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-        if(isLeftPressed && !wasLeftPressed){
-            if(stepIndex < steps.size() - 1){
-                stepIndex++;
-            }
-
-        }
-        wasLeftPressed = isLeftPressed;
-
-        bool isRightPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
-        if(isRightPressed && !wasRightPressed){
-            if(stepIndex >= 1){
-                stepIndex--;
-            }
-
-        }
-        wasRightPressed = isRightPressed;
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        {
-            if(stepIndex < steps.size() - 1){
-                stepIndex++;
-            }
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-        {
-            if(stepIndex >= 1){
-                stepIndex--;
-            }
-        }
-                
-
-        currentStepStruct = steps.at(stepIndex);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
-    }
-*/
