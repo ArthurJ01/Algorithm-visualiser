@@ -82,7 +82,6 @@ int main()
                 //testing stuff
 
                 sf::Vector2f buttonSize = {200.f, 100.f};
-                Button newButton (buttonSize, {400.f, 50.f}, "testing new");
                 Button insertionSortButton(buttonSize, {100.f, 50.f}, "insertion sort");
                 Button MergeSortButton(buttonSize, {100.f, 200.f}, "merge sort");
 
@@ -98,7 +97,6 @@ int main()
                     algoToRun = SortingAlgorithm::mergeSort;
                 }
 
-                window.draw(newButton);
                 window.draw(insertionSortButton);
                 window.draw(MergeSortButton);
                 window.draw(text);
