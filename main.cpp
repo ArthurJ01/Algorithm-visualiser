@@ -10,7 +10,7 @@
 #include "headers/sortingVisualiser.hpp"
 
 enum class Windows {menu, sorting};
-const sf::Font font("C:/Windows/fonts/arial.ttf");
+extern const sf::Font font("C:/Windows/fonts/arial.ttf");
 
 class Button : public sf::Drawable{
     public:
