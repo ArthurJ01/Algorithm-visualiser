@@ -4,7 +4,7 @@
 
 #include "../headers/sortingVisualiser.hpp"
 
-void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun){
+void runSortAlgo(sf::RenderWindow& window, const SortingAlgorithm algoToRun){
 
     //click logic
     bool wasLeftPressed = false;

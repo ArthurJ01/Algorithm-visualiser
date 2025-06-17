@@ -12,4 +12,4 @@
 
 enum class SortingAlgorithm { insertionSort, mergeSort };
 
-void runSortAlgo(sf::RenderWindow& window, SortingAlgorithm algoToRun);
+void runSortAlgo(sf::RenderWindow& window, const SortingAlgorithm algoToRun);
