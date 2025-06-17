@@ -55,6 +55,11 @@ int main()
     SortingAlgorithm algoToRun = SortingAlgorithm::insertionSort;
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Algorithm visualiser");
 
+    
+    sf::Vector2f buttonSize = {200.f, 100.f};
+    Button insertionSortButton(buttonSize, {100.f, 50.f}, "insertion sort");
+    Button MergeSortButton(buttonSize, {100.f, 200.f}, "merge sort");
+
     //loop to keep open
     while(window.isOpen()){
 
@@ -78,12 +83,6 @@ int main()
                 text.setCharacterSize(24); // in pixels, not points!
                 text.setFillColor(sf::Color::Red);
                 text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-
-                //testing stuff
-
-                sf::Vector2f buttonSize = {200.f, 100.f};
-                Button insertionSortButton(buttonSize, {100.f, 50.f}, "insertion sort");
-                Button MergeSortButton(buttonSize, {100.f, 200.f}, "merge sort");
 
                 sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
