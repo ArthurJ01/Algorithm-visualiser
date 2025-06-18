@@ -67,12 +67,6 @@ int main()
             if(event->is<sf::Event::Closed>()){
                 window.close();
             }
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-            {
-                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape){
-                    currentWindow = Windows::sorting;
-                }
-            }  
         }
         switch (currentWindow){
             case Windows::menu: {
