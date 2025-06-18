@@ -68,6 +68,7 @@ int main()
             case Windows::graph:{
 
                 bool wantToExit = false;
+                std::vector<sf::CircleShape> nodeList(10);
 
                 while(!wantToExit && window.isOpen()){
 
@@ -83,6 +84,20 @@ int main()
                                 wantToExit = true;
                             }
                         }
+                    }
+
+                    sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+
+                    if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+                        float nodeSize = 20.f;
+                        sf::CircleShape node(nodeSize);
+                        node.setOrigin({nodeSize, nodeSize});
+                        node.setPosition(mouse_position);
+                        nodeList.emplace_back(node);
+                    }
+
+                    for(sf::CircleShape node : nodeList){
+                        window.draw(node);
                     }
                     window.display();
                 }
