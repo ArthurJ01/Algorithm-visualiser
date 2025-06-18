@@ -35,7 +35,9 @@ void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){
 
         //this is useless after first call, but I don't feel like doing 2 functions
         float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
-        rectangle.setPosition({currentXPosition, window.getSize().y});
+        float yPosition = static_cast<float>(window.getSize().y);
+        rectangle.setPosition({currentXPosition, yPosition});
+        
 
         window.draw(rectangle);
     }
