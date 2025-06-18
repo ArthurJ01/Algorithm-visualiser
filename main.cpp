@@ -8,46 +8,10 @@
 #include "headers/initialize.hpp"
 #include "headers/stepStruct.hpp"
 #include "headers/sortingVisualiser.hpp"
+#include "headers/button.hpp"
 
 enum class Windows {menu, sorting};
 extern const sf::Font font("C:/Windows/fonts/arial.ttf");
-
-class Button : public sf::Drawable{
-    public:
-
-        sf::RectangleShape button;
-        sf::Text text;
-        sf::Window* window;
-
-        Button(const sf::Vector2f &size, const sf::Vector2f &position, const std::string &s)
-            : button(size), text(font)
-        {
-            button.setPosition(position);
-
-            text.setString(s);
-            text.setCharacterSize(24);
-            text.setFillColor(sf::Color::Red);
-
-            float position_x = button.getPosition().x + (button.getSize().x / 2);
-            float position_y = button.getPosition().y + (button.getSize().y / 2);
-            text.setOrigin({text.getGlobalBounds().getCenter()});
-            text.setPosition({position_x, position_y});  
-        }
-
-        //changes colour of rectangle while mouse inside button, returns wether it has been clicked or not
-        bool clicked(sf::Vector2f point){
-            bool inside = button.getGlobalBounds().contains(point);
-            button.setFillColor(inside ? sf::Color::Yellow : sf::Color::White);
-            return inside && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-        }
-
-    private:
-
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
-            target.draw(button, states);
-            target.draw(text, states);
-        }
-};
 
 int main()
 {

@@ -33,6 +33,7 @@
                 "sortingAlgorithms/sortingVisualiser.cpp",
                 "draw.cpp",
                 "initialize.cpp",
+                "button.cpp",
                 "-Iheaders",
                 "-I\"${workspaceFolder}/SFML-3.0.0/include\"",
                 "-DSFML_STATIC",
