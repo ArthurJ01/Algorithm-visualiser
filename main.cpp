@@ -13,6 +13,32 @@
 enum class Windows {menu, sorting, graph};
 extern const sf::Font font("C:/Windows/fonts/arial.ttf");
 
+class Node : public sf::Drawable{
+
+    public :
+        Node(const float& nodeSize, const sf::Vector2f& mouse_position)
+        : circle(nodeSize){
+            circle.setOrigin({nodeSize, nodeSize});
+            circle.setPosition(mouse_position);
+        }
+
+        void addNeighbour(Node* neighbour){
+            adjacencyList.emplace_back(neighbour);
+        }
+
+        const std::vector<Node*>& getAdjacencyList(){
+            return adjacencyList;
+        }
+
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override{
+            target.draw(circle, states);
+        }
+    private: 
+        sf::CircleShape circle;
+        std::vector<Node*> adjacencyList;
+};
+
+
 int main()
 {
     Windows currentWindow = Windows::menu;
