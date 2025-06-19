@@ -60,13 +60,12 @@ int main()
         }
         switch (currentWindow){
             case Windows::menu: {
-                window.clear(sf::Color(100,100,100));
+                window.clear(sf::Color(50,50,50));
 
                 sf::Text text(font); // a font is required to make a text object
                 text.setString("menu ");
                 text.setCharacterSize(24); // in pixels, not points!
                 text.setFillColor(sf::Color::Red);
-                text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
                 sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
