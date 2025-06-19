@@ -20,6 +20,9 @@ class Node : public sf::Drawable{
         : circle(nodeSize){
             circle.setOrigin({nodeSize, nodeSize});
             circle.setPosition(mouse_position);
+            circle.setOutlineThickness(4.f);
+            circle.setFillColor({157, 157, 163});
+            circle.setOutlineColor({86, 86, 105});
         }
 
         void addNeighbour(Node* neighbour){
@@ -30,6 +33,10 @@ class Node : public sf::Drawable{
             return adjacencyList;
         }
 
+        bool contains(sf::Vector2f mouse_position){
+            return circle.getGlobalBounds().contains(mouse_position);
+        }
+
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override{
             target.draw(circle, states);
         }
@@ -37,7 +44,6 @@ class Node : public sf::Drawable{
         sf::CircleShape circle;
         std::vector<Node*> adjacencyList;
 };
-
 
 int main()
 {
@@ -93,7 +99,11 @@ int main()
             case Windows::graph:{
 
                 bool wantToExit = false;
-                std::vector<sf::CircleShape> nodeList(10);
+
+                //set to false to not create a node as soon as we enter
+                bool hasReleasedM1 = false;
+                bool hasReleasedM2 = true;
+                std::vector<Node> nodeList;
 
                 while(!wantToExit && window.isOpen()){
 
@@ -109,19 +119,35 @@ int main()
                                 wantToExit = true;
                             }
                         }
+                        else if(const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonReleased>()){
+                            if(mouseButtonPressed->button == sf::Mouse::Button::Left){
+                                hasReleasedM1 = true;
+                            }
+                            else if(mouseButtonPressed->button == sf::Mouse::Button::Right){
+                                hasReleasedM2 = true;
+                            }
+                        }
                     }
 
                     sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
-                    if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+                    if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
+                        hasReleasedM1 = false;
                         float nodeSize = 20.f;
-                        sf::CircleShape node(nodeSize);
-                        node.setOrigin({nodeSize, nodeSize});
-                        node.setPosition(mouse_position);
+                        Node node(nodeSize, mouse_position);
                         nodeList.emplace_back(node);
                     }
 
-                    for(sf::CircleShape node : nodeList){
+                    if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && hasReleasedM2){
+                        hasReleasedM2 = false;
+                        for(Node node : nodeList){
+                            if (node.contains(mouse_position)){
+                                std::cout << "you found a node! \n";
+                            }
+                        }
+                    }
+
+                    for(Node& node : nodeList){
                         window.draw(node);
                     }
                     window.display();
