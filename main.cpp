@@ -25,7 +25,17 @@ class Node : public sf::Drawable{
             circle.setOutlineColor({86, 86, 105});
         }
 
+        Node(){
+
+        }
+
         void addNeighbour(Node* neighbour){
+
+            for(Node* node : adjacencyList){
+                if (node == neighbour){
+                    return;
+                }
+            }
             adjacencyList.emplace_back(neighbour);
         }
 
@@ -35,6 +45,10 @@ class Node : public sf::Drawable{
 
         bool contains(sf::Vector2f mouse_position){
             return circle.getGlobalBounds().contains(mouse_position);
+        }
+
+        void changeColor(sf::Color color){
+            circle.setFillColor(color);
         }
 
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override{
@@ -103,6 +117,8 @@ int main()
                 //set to false to not create a node as soon as we enter
                 bool hasReleasedM1 = false;
                 bool hasReleasedM2 = true;
+                Node* nodeToLink1 = nullptr;
+                Node* nodeToLink2 = nullptr;
                 std::vector<Node> nodeList;
 
                 while(!wantToExit && window.isOpen()){
@@ -140,10 +156,28 @@ int main()
 
                     if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && hasReleasedM2){
                         hasReleasedM2 = false;
-                        for(Node node : nodeList){
+                        for(Node& node : nodeList){
                             if (node.contains(mouse_position)){
                                 std::cout << "you found a node! \n";
+                                node.changeColor(sf::Color::Red);
+                                if(nodeToLink1 == nullptr){
+                                    nodeToLink1 = &node;
+                                    break;
+                                }
+                                else{
+                                    nodeToLink2 = &node;
+                                    nodeToLink1->addNeighbour(nodeToLink2);
+                                    nodeToLink2->addNeighbour(nodeToLink1);
+
+                                    nodeToLink1->changeColor(sf::Color::Cyan);
+                                    nodeToLink2->changeColor(sf::Color::Cyan);
+
+                                    nodeToLink1 = nullptr;
+                                    nodeToLink2 = nullptr;
+                                    break;
+                                }
                             }
+
                         }
                     }
 
