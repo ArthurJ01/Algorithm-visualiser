@@ -58,7 +58,7 @@ void runGraphBuilder(sf::RenderWindow& window){
     bool hasReleasedM2 = true;
     Node* nodeToLink1 = nullptr;
     Node* nodeToLink2 = nullptr;
-    std::vector<Node> nodeList;
+    std::vector<std::unique_ptr<Node>> nodeList;
     std::vector<std::pair<Node*, Node*>> edges;
 
     while(!wantToExit && window.isOpen()){
@@ -93,13 +93,15 @@ void runGraphBuilder(sf::RenderWindow& window){
             hasReleasedM1 = false;
             float nodeSize = 20.f;
             Node node(nodeSize, mouse_position);
-            nodeList.emplace_back(node);
+            nodeList.emplace_back(std::make_unique<Node>(nodeSize, mouse_position));
         }
 
         //link two nodes together
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && hasReleasedM2){
             hasReleasedM2 = false;
-            for(Node& node : nodeList){
+            for(auto& nodeptr : nodeList){
+                Node& node = *nodeptr;
+
                 if (node.contains(mouse_position)){
                     node.changeColor(sf::Color::Red);
                     if(nodeToLink1 == nullptr){
@@ -125,7 +127,8 @@ void runGraphBuilder(sf::RenderWindow& window){
             }
         }
 
-        for(Node& node : nodeList){
+        for(auto& nodeptr : nodeList){
+            Node& node = *nodeptr;
             window.draw(node);
         }
         for (const auto& nodePair : edges){
