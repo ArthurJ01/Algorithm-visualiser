@@ -34,6 +34,10 @@ class Node : public sf::Drawable{
             return circle.getGlobalBounds().contains(mouse_position);
         }
 
+        sf::Vector2f getPosition(){
+            return circle.getPosition();
+        }
+
         void changeColor(sf::Color color){
             circle.setFillColor(color);
         }
@@ -124,6 +128,17 @@ void runGraphBuilder(sf::RenderWindow& window){
         for(Node& node : nodeList){
             window.draw(node);
         }
+        for (const auto& nodePair : edges){
+            Node* node1 = nodePair.first;
+            Node* node2 = nodePair.second;
+
+            sf::VertexArray line (sf::PrimitiveType::Lines, 2);
+
+            line[0].position = node1->getPosition();
+            line[1].position = node2->getPosition();
+            window.draw(line);
+        }
+
         window.display();
     }
 }
