@@ -108,6 +108,10 @@ void runGraphBuilder(sf::RenderWindow& window){
                         nodeToLink1 = &node;
                         break;
                     }
+                    else if(nodeToLink1 == &node){
+                        //do nothing
+                        break;
+                    }
                     else{
                         nodeToLink2 = &node;
                         nodeToLink1->addNeighbour(nodeToLink2);
