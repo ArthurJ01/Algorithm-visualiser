@@ -8,7 +8,7 @@
 
 
 
-enum class traversalAlgo{none, dfs, bfs};
+enum class traversalAlgo{none, dfs, bfs, reset};
 
 class Node : public sf::Drawable{
 
@@ -64,6 +64,8 @@ void runGraphBuilder(sf::RenderWindow& window){
     //set to false to not create a node as soon as we enter
     bool hasReleasedM1 = false;
     bool hasReleasedM2 = true;
+    Node* startingNode = nullptr;
+    sf::Color startingNodeColor({139, 0, 0});
     Node* nodeToLink1 = nullptr;
     Node* nodeToLink2 = nullptr;
     std::vector<std::unique_ptr<Node>> nodeList;
@@ -80,8 +82,10 @@ void runGraphBuilder(sf::RenderWindow& window){
     sf::Vector2f buttonSize = {100.f, 100.f};
     Button bfsButton(buttonSize, {650.f, 15.f}, "BFS");
     Button dfsButton(buttonSize, {650.f, 215.f}, "DFS");
+    Button resetButton(buttonSize, {650.f, 415.f}, "Reset");
     buttonList.emplace_back(&bfsButton);
     buttonList.emplace_back(&dfsButton);
+    buttonList.emplace_back(&resetButton);
 
     std::vector<Node*> visitOrder;
     traversalAlgo currentAlgo = traversalAlgo::none;
@@ -121,9 +125,37 @@ void runGraphBuilder(sf::RenderWindow& window){
         }
 
         if(dfsButton.clicked(mouse_position)){
-            visitOrder = dfs(nodeList.at(0).get());
+            visitOrder = dfs(startingNode);
             currentAlgo = traversalAlgo::dfs;
+        }
 
+        if(resetButton.clicked(mouse_position)){
+            currentAlgo = traversalAlgo::reset;
+        }
+
+        if(currentAlgo == traversalAlgo::reset){
+            for (auto& node : nodeList){
+                node.get()->changeColor({178, 102, 255});
+            }
+            if(startingNode != nullptr){
+                startingNode->changeColor(startingNodeColor);
+            }
+            currentVisitIndex = 0;
+            currentAlgo = traversalAlgo::none;
+        }
+
+        if(currentAlgo == traversalAlgo::none){
+            if(startingNode != nullptr){
+                startingNode->changeColor(startingNodeColor);
+            }
+        }
+
+        if(currentAlgo == traversalAlgo::dfs){
+            if (currentVisitIndex < visitOrder.size() && traversalClock.getElapsedTime().asMilliseconds() > 500){
+                visitOrder[currentVisitIndex]->changeColor({207, 255, 4});
+                currentVisitIndex++;
+                traversalClock.restart();
+            }
         }
 
         //create nodes, in graphWindow bounds
@@ -131,8 +163,11 @@ void runGraphBuilder(sf::RenderWindow& window){
             if(graphWindow.getGlobalBounds().contains(mouse_position)){
                 hasReleasedM1 = false;
                 float nodeSize = 15.f;
-                Node node(nodeSize, mouse_position);
                 nodeList.emplace_back(std::make_unique<Node>(nodeSize, mouse_position));
+                if(startingNode == nullptr){
+                    startingNode = nodeList.at(0).get();
+                    startingNode->changeColor({255, 99, 71});
+                }
             }
         }
 
@@ -196,21 +231,12 @@ void runGraphBuilder(sf::RenderWindow& window){
             window.draw(button);
         }
 
-        if(currentAlgo == traversalAlgo::dfs){
-            if (currentVisitIndex < visitOrder.size() && traversalClock.getElapsedTime().asMilliseconds() > 500){
-                visitOrder[currentVisitIndex]->changeColor({207, 255, 4});
-                currentVisitIndex++;
-                traversalClock.restart();
-            }
-        }
-
 
         window.display();
     }
 }
 
 std::vector<Node*> dfs(Node* startNode){
-
     std::vector<Node*> visitOrder;
     std::stack<Node*> openList;
     openList.emplace(startNode);
@@ -219,6 +245,7 @@ std::vector<Node*> dfs(Node* startNode){
 
     while (!openList.empty()){
         Node* n = openList.top(); //Visit Node n
+        //could add some things here to show backtracking
         openList.pop();
         visitOrder.emplace_back(n); //Store visit order
         std::vector<Node*> adjacentNodes = n->getAdjacencyList();
