@@ -9,9 +9,9 @@ class Node : public sf::Drawable{
         : circle(nodeSize){
             circle.setOrigin({nodeSize, nodeSize});
             circle.setPosition(mouse_position);
-            circle.setOutlineThickness(4.f);
-            circle.setFillColor({157, 157, 163});
-            circle.setOutlineColor({86, 86, 105});
+            //circle.setOutlineThickness(2.f);
+            circle.setFillColor({178, 102, 255});
+            //circle.setOutlineColor({255, 255, 255});
         }
 
         Node(){}
@@ -60,10 +60,15 @@ void runGraphBuilder(sf::RenderWindow& window){
     Node* nodeToLink2 = nullptr;
     std::vector<std::unique_ptr<Node>> nodeList;
     std::vector<std::pair<Node*, Node*>> edges;
+    sf::RectangleShape graphWindow({window.getSize().x - 200.f, window.getSize().y - 100.f});
+    graphWindow.setFillColor({30, 30, 46});
+    graphWindow.setPosition({15.f,15.f});
+    graphWindow.setOutlineThickness(5.f);
+    graphWindow.setOutlineColor({100,100,100});
 
     while(!wantToExit && window.isOpen()){
 
-        window.clear({0,0,0});
+        window.clear({20, 20, 20});
 
         //check window closed (always necessary), exit, release of m1, m2
         while (const std::optional event = window.pollEvent()){
@@ -91,7 +96,7 @@ void runGraphBuilder(sf::RenderWindow& window){
         //create nodes
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
             hasReleasedM1 = false;
-            float nodeSize = 20.f;
+            float nodeSize = 15.f;
             Node node(nodeSize, mouse_position);
             nodeList.emplace_back(std::make_unique<Node>(nodeSize, mouse_position));
         }
@@ -103,7 +108,7 @@ void runGraphBuilder(sf::RenderWindow& window){
                 Node& node = *nodeptr;
 
                 if (node.contains(mouse_position)){
-                    node.changeColor(sf::Color::Red);
+                    node.changeColor({255, 99, 71});
                     if(nodeToLink1 == nullptr){
                         nodeToLink1 = &node;
                         break;
@@ -117,8 +122,8 @@ void runGraphBuilder(sf::RenderWindow& window){
                         nodeToLink1->addNeighbour(nodeToLink2);
                         nodeToLink2->addNeighbour(nodeToLink1);
 
-                        nodeToLink1->changeColor(sf::Color::Cyan);
-                        nodeToLink2->changeColor(sf::Color::Cyan);
+                        nodeToLink1->changeColor({0, 153, 255});
+                        nodeToLink2->changeColor({0, 153, 255});
 
                         edges.emplace_back(nodeToLink1, nodeToLink2);
 
@@ -130,11 +135,8 @@ void runGraphBuilder(sf::RenderWindow& window){
 
             }
         }
+        window.draw(graphWindow);
 
-        for(auto& nodeptr : nodeList){
-            Node& node = *nodeptr;
-            window.draw(node);
-        }
         for (const auto& nodePair : edges){
             Node* node1 = nodePair.first;
             Node* node2 = nodePair.second;
@@ -142,9 +144,20 @@ void runGraphBuilder(sf::RenderWindow& window){
             sf::VertexArray line (sf::PrimitiveType::Lines, 2);
 
             line[0].position = node1->getPosition();
+            line[0].color = {200, 200, 200};
+
             line[1].position = node2->getPosition();
+            line[1].color = {200, 200, 200};
             window.draw(line);
         }
+
+        for(auto& nodeptr : nodeList){
+            Node& node = *nodeptr;
+            window.draw(node);
+        }
+
+
+
 
         window.display();
     }

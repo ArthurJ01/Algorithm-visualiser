@@ -36,7 +36,7 @@ int main()
         }
         switch (currentWindow){
             case Windows::menu: {
-                window.clear(sf::Color(50,50,50));
+                window.clear(sf::Color(20, 20, 20));
 
                 sf::Text text(font); // a font is required to make a text object
                 text.setString("menu ");
