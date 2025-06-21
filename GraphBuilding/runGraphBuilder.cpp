@@ -125,7 +125,6 @@ void runGraphBuilder(sf::RenderWindow& window){
         }
 
         if(dfsButton.clicked(mouse_position)){
-            visitOrder = dfs(startingNode);
             currentAlgo = traversalAlgo::dfs;
         }
 
@@ -151,11 +150,18 @@ void runGraphBuilder(sf::RenderWindow& window){
         }
 
         if(currentAlgo == traversalAlgo::dfs){
-            if (currentVisitIndex < visitOrder.size() && traversalClock.getElapsedTime().asMilliseconds() > 500){
-                visitOrder[currentVisitIndex]->changeColor({207, 255, 4});
-                currentVisitIndex++;
-                traversalClock.restart();
+            if(startingNode == nullptr){
+                currentAlgo = traversalAlgo::none;
             }
+            else{
+                visitOrder = dfs(startingNode);
+                if (currentVisitIndex < visitOrder.size() && traversalClock.getElapsedTime().asMilliseconds() > 500){
+                    visitOrder[currentVisitIndex]->changeColor({207, 255, 4});
+                    currentVisitIndex++;
+                    traversalClock.restart();
+                }
+            }
+
         }
 
         //create nodes, in graphWindow bounds
