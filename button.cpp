@@ -22,7 +22,8 @@ Button::Button(const sf::Vector2f &size, const sf::Vector2f &position, const std
 //changes colour of rectangle while mouse inside button, returns wether it has been clicked or not
 bool Button::clicked(sf::Vector2f point){
     bool inside = button.getGlobalBounds().contains(point);
-    button.setFillColor(inside ? sf::Color::Yellow : sf::Color::White);
+    button.setFillColor(inside ? sf::Color(0, 153, 255) : sf::Color(45, 50, 70));
+    text.setFillColor(inside ? sf::Color(255, 255, 255) : sf::Color(240, 240, 240));
     return inside && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 }
 

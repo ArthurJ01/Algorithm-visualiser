@@ -93,12 +93,14 @@ void runGraphBuilder(sf::RenderWindow& window){
 
         sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
-        //create nodes
+        //create nodes, in graphWindow bounds
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
-            hasReleasedM1 = false;
-            float nodeSize = 15.f;
-            Node node(nodeSize, mouse_position);
-            nodeList.emplace_back(std::make_unique<Node>(nodeSize, mouse_position));
+            if(graphWindow.getGlobalBounds().contains(mouse_position)){
+                hasReleasedM1 = false;
+                float nodeSize = 15.f;
+                Node node(nodeSize, mouse_position);
+                nodeList.emplace_back(std::make_unique<Node>(nodeSize, mouse_position));
+            }
         }
 
         //link two nodes together
