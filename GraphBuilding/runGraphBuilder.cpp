@@ -1,6 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <stack>
+#include <unordered_map>
+#include <thread>
 
+#include "../headers/button.hpp"
+
+
+
+enum class traversalAlgo{none, dfs, bfs};
 
 class Node : public sf::Drawable{
 
@@ -9,9 +17,7 @@ class Node : public sf::Drawable{
         : circle(nodeSize){
             circle.setOrigin({nodeSize, nodeSize});
             circle.setPosition(mouse_position);
-            //circle.setOutlineThickness(2.f);
             circle.setFillColor({178, 102, 255});
-            //circle.setOutlineColor({255, 255, 255});
         }
 
         Node(){}
@@ -50,6 +56,8 @@ class Node : public sf::Drawable{
         std::vector<Node*> adjacencyList;
 };
 
+std::vector<Node*> dfs(Node* startNode);
+
 void runGraphBuilder(sf::RenderWindow& window){
     bool wantToExit = false;
 
@@ -61,10 +69,25 @@ void runGraphBuilder(sf::RenderWindow& window){
     std::vector<std::unique_ptr<Node>> nodeList;
     std::vector<std::pair<Node*, Node*>> edges;
     sf::RectangleShape graphWindow({window.getSize().x - 200.f, window.getSize().y - 100.f});
+
     graphWindow.setFillColor({30, 30, 46});
     graphWindow.setPosition({15.f,15.f});
-    graphWindow.setOutlineThickness(5.f);
+    graphWindow.setOutlineThickness(-5.f);
     graphWindow.setOutlineColor({100,100,100});
+
+
+    std::vector<Button*> buttonList;
+    sf::Vector2f buttonSize = {100.f, 100.f};
+    Button bfsButton(buttonSize, {650.f, 15.f}, "BFS");
+    Button dfsButton(buttonSize, {650.f, 215.f}, "DFS");
+    buttonList.emplace_back(&bfsButton);
+    buttonList.emplace_back(&dfsButton);
+
+    std::vector<Node*> visitOrder;
+    traversalAlgo currentAlgo = traversalAlgo::none;
+
+    size_t currentVisitIndex = 0;
+    sf::Clock traversalClock;
 
     while(!wantToExit && window.isOpen()){
 
@@ -92,6 +115,16 @@ void runGraphBuilder(sf::RenderWindow& window){
         }
 
         sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+
+        if(bfsButton.clicked(mouse_position)){
+
+        }
+
+        if(dfsButton.clicked(mouse_position)){
+            visitOrder = dfs(nodeList.at(0).get());
+            currentAlgo = traversalAlgo::dfs;
+
+        }
 
         //create nodes, in graphWindow bounds
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
@@ -158,10 +191,45 @@ void runGraphBuilder(sf::RenderWindow& window){
             window.draw(node);
         }
 
+        for(Button* buttonPtr : buttonList){
+            Button button = *buttonPtr;
+            window.draw(button);
+        }
 
+        if(currentAlgo == traversalAlgo::dfs){
+            if (currentVisitIndex < visitOrder.size() && traversalClock.getElapsedTime().asMilliseconds() > 500){
+                visitOrder[currentVisitIndex]->changeColor({207, 255, 4});
+                currentVisitIndex++;
+                traversalClock.restart();
+            }
+        }
 
 
         window.display();
     }
+}
+
+std::vector<Node*> dfs(Node* startNode){
+
+    std::vector<Node*> visitOrder;
+    std::stack<Node*> openList;
+    openList.emplace(startNode);
+    std::unordered_map<Node*, bool> visited;
+    visited[startNode] = true;
+
+    while (!openList.empty()){
+        Node* n = openList.top(); //Visit Node n
+        openList.pop();
+        visitOrder.emplace_back(n); //Store visit order
+        std::vector<Node*> adjacentNodes = n->getAdjacencyList();
+
+        for(Node* m : adjacentNodes){
+            if (visited.find(m) == visited.end()) {
+                openList.push(m);
+                visited[m] = true;
+            }
+        }
+    }
+    return visitOrder;
 }
 

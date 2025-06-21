@@ -8,10 +8,11 @@ Button::Button(const sf::Vector2f &size, const sf::Vector2f &position, const std
     : button(size), text(font)
 {
     button.setPosition(position);
+    button.setFillColor({45, 50, 70});
 
     text.setString(s);
     text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Red);
+    text.setFillColor({240, 240, 240});
 
     float position_x = button.getPosition().x + (button.getSize().x / 2);
     float position_y = button.getPosition().y + (button.getSize().y / 2);
