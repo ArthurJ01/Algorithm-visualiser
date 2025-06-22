@@ -32,6 +32,7 @@
                 "sortingAlgorithms/mergeSort.cpp",
                 "sortingAlgorithms/sortingVisualiser.cpp",
                 "GraphBuilding/runGraphBuilder.cpp",
+                "GraphBuilding/traversal.cpp",
                 "draw.cpp",
                 "initialize.cpp",
                 "button.cpp",
