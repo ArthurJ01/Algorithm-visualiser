@@ -35,6 +35,7 @@
                 "draw.cpp",
                 "initialize.cpp",
                 "button.cpp",
+                "GraphBuilding/node.cpp",
                 "-Iheaders",
                 "-I\"${workspaceFolder}/SFML-3.0.0/include\"",
                 "-DSFML_STATIC",

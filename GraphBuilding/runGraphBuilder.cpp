@@ -5,56 +5,10 @@
 #include <thread>
 
 #include "../headers/button.hpp"
-
+#include "../headers/node.hpp"
 
 
 enum class traversalAlgo{none, dfs, bfs, reset};
-
-class Node : public sf::Drawable{
-
-    public :
-        Node(const float& nodeSize, const sf::Vector2f& mouse_position)
-        : circle(nodeSize){
-            circle.setOrigin({nodeSize, nodeSize});
-            circle.setPosition(mouse_position);
-            circle.setFillColor({178, 102, 255});
-        }
-
-        Node(){}
-
-        void addNeighbour(Node* neighbour){
-
-            for(Node* node : adjacencyList){
-                if (node == neighbour){
-                    return;
-                }
-            }
-            adjacencyList.emplace_back(neighbour);
-        }
-
-        const std::vector<Node*>& getAdjacencyList(){
-            return adjacencyList;
-        }
-
-        bool contains(sf::Vector2f mouse_position){
-            return circle.getGlobalBounds().contains(mouse_position);
-        }
-
-        sf::Vector2f getPosition(){
-            return circle.getPosition();
-        }
-
-        void changeColor(sf::Color color){
-            circle.setFillColor(color);
-        }
-
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override{
-            target.draw(circle, states);
-        }
-    private: 
-        sf::CircleShape circle;
-        std::vector<Node*> adjacencyList;
-};
 
 std::vector<Node*> dfs(Node* startNode);
 
