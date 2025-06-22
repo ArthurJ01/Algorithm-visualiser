@@ -1,7 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <stack>
-#include <unordered_map>
 #include <thread>
 
 #include "../headers/button.hpp"
@@ -9,7 +7,7 @@
 #include "../headers/traversal.hpp"
 
 
-enum class traversalAlgo{none, dfs, bfs, reset};
+enum class traversalAlgo{none, dfs, bfs, reset, clear};
 
 std::vector<Node*> dfs(Node* startNode);
 
@@ -35,12 +33,14 @@ void runGraphBuilder(sf::RenderWindow& window){
 
     std::vector<Button*> buttonList;
     sf::Vector2f buttonSize = {100.f, 100.f};
-    Button bfsButton(buttonSize, {650.f, 15.f}, "BFS");
-    Button dfsButton(buttonSize, {650.f, 215.f}, "DFS");
-    Button resetButton(buttonSize, {650.f, 415.f}, "Reset");
+    Button bfsButton(buttonSize, {650.f, 15.f}, "BFS");         
+    Button dfsButton(buttonSize, {650.f, 148.33f}, "DFS");      
+    Button resetButton(buttonSize, {650.f, 281.66f}, "Reset");  
+    Button clearButton(buttonSize, {650.f, 415.f}, "Clear");
     buttonList.emplace_back(&bfsButton);
     buttonList.emplace_back(&dfsButton);
     buttonList.emplace_back(&resetButton);
+    buttonList.emplace_back(&clearButton);
 
     std::vector<Node*> visitOrder;
     traversalAlgo currentAlgo = traversalAlgo::none;
@@ -76,26 +76,23 @@ void runGraphBuilder(sf::RenderWindow& window){
         sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
         if(bfsButton.clicked(mouse_position)){
-
+            currentVisitIndex = 0;
+            currentAlgo = traversalAlgo::bfs;
         }
 
         if(dfsButton.clicked(mouse_position)){
+            currentVisitIndex = 0;
             currentAlgo = traversalAlgo::dfs;
         }
 
         if(resetButton.clicked(mouse_position)){
+            currentVisitIndex = 0;
             currentAlgo = traversalAlgo::reset;
         }
 
-        if(currentAlgo == traversalAlgo::reset){
-            for (auto& node : nodeList){
-                node.get()->changeColor({178, 102, 255});
-            }
-            if(startingNode != nullptr){
-                startingNode->changeColor(startingNodeColor);
-            }
+        if(clearButton.clicked(mouse_position)){
             currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::none;
+            currentAlgo = traversalAlgo::clear;
         }
 
         if(currentAlgo == traversalAlgo::none){
@@ -104,6 +101,20 @@ void runGraphBuilder(sf::RenderWindow& window){
             }
         }
 
+        if(currentAlgo == traversalAlgo::bfs){
+            if(startingNode == nullptr){
+                currentAlgo = traversalAlgo::none;
+            }
+            else{
+                visitOrder = bfs(startingNode);
+                if (currentVisitIndex < visitOrder.size() && traversalClock.getElapsedTime().asMilliseconds() > 500){
+                    visitOrder[currentVisitIndex]->changeColor({207, 255, 4});
+                    currentVisitIndex++;
+                    traversalClock.restart();
+                }
+            }
+
+        }
         if(currentAlgo == traversalAlgo::dfs){
             if(startingNode == nullptr){
                 currentAlgo = traversalAlgo::none;
@@ -118,6 +129,30 @@ void runGraphBuilder(sf::RenderWindow& window){
             }
 
         }
+
+        if(currentAlgo == traversalAlgo::reset){
+            for (auto& node : nodeList){
+                node.get()->changeColor({178, 102, 255});
+            }
+            if(startingNode != nullptr){
+                startingNode->changeColor(startingNodeColor);
+            }
+            currentVisitIndex = 0;
+            currentAlgo = traversalAlgo::none;
+        }
+        
+        if(currentAlgo == traversalAlgo::clear){
+            nodeList.clear();
+            nodeList.shrink_to_fit();
+            edges.clear();
+            edges.shrink_to_fit();
+            startingNode = nullptr;
+            currentVisitIndex = 0;
+            currentAlgo = traversalAlgo::none;
+        }
+
+
+
 
         //create nodes, in graphWindow bounds
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
