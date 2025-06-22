@@ -5,3 +5,4 @@
 
 
 std::vector<Node*> dfs(Node* startNode);
+std::vector<Node*> bfs(Node* startNode);
