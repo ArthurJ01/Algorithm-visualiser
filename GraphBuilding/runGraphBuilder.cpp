@@ -5,11 +5,10 @@
 #include "../headers/button.hpp"
 #include "../headers/node.hpp"
 #include "../headers/traversal.hpp"
-
+#include "../headers/draw.hpp"
+#include "../headers/types.hpp"
 
 enum class traversalAlgo{none, dfs, bfs, reset, clear};
-
-std::vector<Node*> dfs(Node* startNode);
 
 void runGraphBuilder(sf::RenderWindow& window){
     bool wantToExit = false;
@@ -21,8 +20,8 @@ void runGraphBuilder(sf::RenderWindow& window){
     sf::Color startingNodeColor({139, 0, 0});
     Node* nodeToLink1 = nullptr;
     Node* nodeToLink2 = nullptr;
-    std::vector<std::unique_ptr<Node>> nodeList;
-    std::vector<std::pair<Node*, Node*>> edges;
+    NodeList nodeList;
+    EdgeList edges;
     sf::RectangleShape graphWindow({window.getSize().x - 200.f, window.getSize().y - 100.f});
 
     graphWindow.setFillColor({30, 30, 46});
@@ -31,7 +30,7 @@ void runGraphBuilder(sf::RenderWindow& window){
     graphWindow.setOutlineColor({100,100,100});
 
 
-    std::vector<Button*> buttonList;
+    ButtonList buttonList;
     sf::Vector2f buttonSize = {100.f, 100.f};
     Button bfsButton(buttonSize, {650.f, 15.f}, "BFS");         
     Button dfsButton(buttonSize, {650.f, 148.33f}, "DFS");      
@@ -151,9 +150,6 @@ void runGraphBuilder(sf::RenderWindow& window){
             currentAlgo = traversalAlgo::none;
         }
 
-
-
-
         //create nodes, in graphWindow bounds
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
             if(graphWindow.getGlobalBounds().contains(mouse_position)){
@@ -201,35 +197,10 @@ void runGraphBuilder(sf::RenderWindow& window){
 
             }
         }
-        window.draw(graphWindow);
 
-        for (const auto& nodePair : edges){
-            Node* node1 = nodePair.first;
-            Node* node2 = nodePair.second;
-
-            sf::VertexArray line (sf::PrimitiveType::Lines, 2);
-
-            line[0].position = node1->getPosition();
-            line[0].color = {200, 200, 200};
-
-            line[1].position = node2->getPosition();
-            line[1].color = {200, 200, 200};
-            window.draw(line);
-        }
-
-        for(auto& nodeptr : nodeList){
-            Node& node = *nodeptr;
-            window.draw(node);
-        }
-
-        for(Button* buttonPtr : buttonList){
-            Button button = *buttonPtr;
-            window.draw(button);
-        }
-
-
-        window.display();
+        drawGraphBuilder(window, graphWindow, edges, nodeList, buttonList);
     }
 }
+
 
 

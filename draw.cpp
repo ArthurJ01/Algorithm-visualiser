@@ -3,6 +3,9 @@
 
 #include "headers/draw.hpp"
 #include "headers/stepStruct.hpp"
+#include "headers/types.hpp"
+#include "headers/node.hpp"
+#include "headers/button.hpp"
 
 //assumes maxValue is the size of array, should be fine for how it's used before
 void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){
@@ -41,4 +44,34 @@ void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){
 
         window.draw(rectangle);
     }
+}
+
+void drawGraphBuilder(sf::RenderWindow& window, const sf::RectangleShape& graphWindow, EdgeList& edges, NodeList& nodeList, ButtonList& buttonList){
+    window.draw(graphWindow);
+
+    for (const auto& nodePair : edges){
+        Node* node1 = nodePair.first;
+        Node* node2 = nodePair.second;
+
+        sf::VertexArray line (sf::PrimitiveType::Lines, 2);
+
+        line[0].position = node1->getPosition();
+        line[0].color = {200, 200, 200};
+
+        line[1].position = node2->getPosition();
+        line[1].color = {200, 200, 200};
+        window.draw(line);
+    }
+
+    for(auto& nodeptr : nodeList){
+        Node& node = *nodeptr;
+        window.draw(node);
+    }
+
+    for(Button* buttonPtr : buttonList){
+        window.draw(*buttonPtr);
+    }
+
+
+    window.display();
 }
