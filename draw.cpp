@@ -46,8 +46,9 @@ void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){
     }
 }
 
-void drawGraphBuilder(sf::RenderWindow& window, const sf::RectangleShape& graphWindow, EdgeList& edges, NodeList& nodeList, ButtonList& buttonList){
+void drawGraphBuilder(sf::RenderWindow& window, const sf::RectangleShape& graphWindow, EdgeList& edges, NodeList& nodeList, ButtonList& buttonList, sf::Text text){
     window.draw(graphWindow);
+    window.draw(text);
 
     for (const auto& nodePair : edges){
         Node* node1 = nodePair.first;

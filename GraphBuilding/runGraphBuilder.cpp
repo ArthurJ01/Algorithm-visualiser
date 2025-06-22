@@ -9,6 +9,7 @@
 #include "../headers/types.hpp"
 
 enum class traversalAlgo{none, dfs, bfs, reset, clear};
+extern const sf::Font font;
 
 void runGraphBuilder(sf::RenderWindow& window){
     bool wantToExit = false;
@@ -29,6 +30,11 @@ void runGraphBuilder(sf::RenderWindow& window){
     graphWindow.setOutlineThickness(-5.f);
     graphWindow.setOutlineColor({100,100,100});
 
+    sf::Text text(font); // a font is required to make a text object
+    text.setString("Create a node with m1, create edges with m2");
+    text.setCharacterSize(24); // in pixels, not points!
+    text.setFillColor({240, 240, 240});
+    text.setPosition({40.f, 550.f});
 
     ButtonList buttonList;
     sf::Vector2f buttonSize = {100.f, 100.f};
@@ -36,10 +42,12 @@ void runGraphBuilder(sf::RenderWindow& window){
     Button dfsButton(buttonSize, {650.f, 148.33f}, "DFS");      
     Button resetButton(buttonSize, {650.f, 281.66f}, "Reset");  
     Button clearButton(buttonSize, {650.f, 415.f}, "Clear");
+    Button returnButton({100.f, 40.f}, {650.f, 535.f}, "Return");
     buttonList.emplace_back(&bfsButton);
     buttonList.emplace_back(&dfsButton);
     buttonList.emplace_back(&resetButton);
     buttonList.emplace_back(&clearButton);
+    buttonList.emplace_back(&returnButton);
 
     std::vector<Node*> visitOrder;
     traversalAlgo currentAlgo = traversalAlgo::none;
@@ -92,6 +100,10 @@ void runGraphBuilder(sf::RenderWindow& window){
         if(clearButton.clicked(mouse_position)){
             currentVisitIndex = 0;
             currentAlgo = traversalAlgo::clear;
+        }
+
+        if(returnButton.clicked(mouse_position)){
+            wantToExit = true;
         }
 
         if(currentAlgo == traversalAlgo::none){
@@ -197,8 +209,7 @@ void runGraphBuilder(sf::RenderWindow& window){
 
             }
         }
-
-        drawGraphBuilder(window, graphWindow, edges, nodeList, buttonList);
+        drawGraphBuilder(window, graphWindow, edges, nodeList, buttonList, text);
     }
 }
 
