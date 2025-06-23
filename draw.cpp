@@ -78,8 +78,8 @@ void drawGraphBuilder(sf::RenderWindow& window, const sf::RectangleShape& graphW
         window.draw(node);
     }
 
-    for(Button* buttonPtr : buttonList){
-        window.draw(*buttonPtr);
+    for(const auto& actionButtonPtr : buttonList){
+        window.draw(actionButtonPtr->button);
     }
 
 

@@ -70,14 +70,12 @@ int main()
             }
 
             case Windows::graph:{
-
                 runGraphBuilder(window);
                 currentWindow = Windows::menu;
                 break;
             }
 
             case Windows::sorting: {
-                //run sorting algo and when it is done, go back to menu
                 runSortAlgo(window, algoToRun);
                 currentWindow = Windows::menu;
                 break;

@@ -2,13 +2,13 @@
 #include <vector>
 #include <thread>
 
-#include "../headers/button.hpp"
-#include "../headers/node.hpp"
-#include "../headers/traversal.hpp"
-#include "../headers/draw.hpp"
-#include "../headers/types.hpp"
+#include "button.hpp"
+#include "node.hpp"
+#include "traversal.hpp"
+#include "draw.hpp"
+#include "types.hpp"
+#include "graphInputHandler.hpp"
 
-enum class traversalAlgo{none, dfs, bfs, reset, clear};
 extern const sf::Font font;
 
 void runGraphBuilder(sf::RenderWindow& window){
@@ -21,9 +21,13 @@ void runGraphBuilder(sf::RenderWindow& window){
     sf::Color startingNodeColor({139, 0, 0});
     Node* nodeToLink1 = nullptr;
     Node* nodeToLink2 = nullptr;
+    sf::RectangleShape graphWindow({window.getSize().x - 200.f, window.getSize().y - 100.f});
+
+    //defined in types.hpp
     NodeList nodeList;
     EdgeList edges;
-    sf::RectangleShape graphWindow({window.getSize().x - 200.f, window.getSize().y - 100.f});
+
+    ButtonList actionButtons;
 
     graphWindow.setFillColor({30, 30, 46});
     graphWindow.setPosition({15.f,15.f});
@@ -36,21 +40,21 @@ void runGraphBuilder(sf::RenderWindow& window){
     text.setFillColor({240, 240, 240});
     text.setPosition({40.f, 550.f});
 
-    ButtonList buttonList;
     sf::Vector2f buttonSize = {100.f, 100.f};
     Button bfsButton(buttonSize, {650.f, 15.f}, "BFS");         
     Button dfsButton(buttonSize, {650.f, 148.33f}, "DFS");      
     Button resetButton(buttonSize, {650.f, 281.66f}, "Reset");  
     Button clearButton(buttonSize, {650.f, 415.f}, "Clear");
     Button returnButton({100.f, 40.f}, {650.f, 535.f}, "Return");
-    buttonList.emplace_back(&bfsButton);
-    buttonList.emplace_back(&dfsButton);
-    buttonList.emplace_back(&resetButton);
-    buttonList.emplace_back(&clearButton);
-    buttonList.emplace_back(&returnButton);
+
+    actionButtons.emplace_back(std::make_unique<actionButton>(actionType::bfs, bfsButton));
+    actionButtons.emplace_back(std::make_unique<actionButton>(actionType::dfs, dfsButton));
+    actionButtons.emplace_back(std::make_unique<actionButton>(actionType::reset, resetButton));
+    actionButtons.emplace_back(std::make_unique<actionButton>(actionType::clear, clearButton));
+    actionButtons.emplace_back(std::make_unique<actionButton>(actionType::exit, returnButton));
 
     std::vector<Node*> visitOrder;
-    traversalAlgo currentAlgo = traversalAlgo::none;
+    actionType currentAction = actionType::none;
 
     size_t currentVisitIndex = 0;
     sf::Clock traversalClock;
@@ -82,39 +86,17 @@ void runGraphBuilder(sf::RenderWindow& window){
 
         sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
-        if(bfsButton.clicked(mouse_position)){
-            currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::bfs;
-        }
+        currentAction = getCurrentAction(currentAction, mouse_position, actionButtons);
 
-        if(dfsButton.clicked(mouse_position)){
-            currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::dfs;
-        }
-
-        if(resetButton.clicked(mouse_position)){
-            currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::reset;
-        }
-
-        if(clearButton.clicked(mouse_position)){
-            currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::clear;
-        }
-
-        if(returnButton.clicked(mouse_position)){
-            wantToExit = true;
-        }
-
-        if(currentAlgo == traversalAlgo::none){
+        if(currentAction == actionType::none){
             if(startingNode != nullptr){
                 startingNode->changeColor(startingNodeColor);
             }
         }
 
-        if(currentAlgo == traversalAlgo::bfs){
+        if(currentAction == actionType::bfs){
             if(startingNode == nullptr){
-                currentAlgo = traversalAlgo::none;
+                currentAction = actionType::none;
             }
             else{
                 visitOrder = bfs(startingNode);
@@ -126,9 +108,9 @@ void runGraphBuilder(sf::RenderWindow& window){
             }
 
         }
-        if(currentAlgo == traversalAlgo::dfs){
+        if(currentAction == actionType::dfs){
             if(startingNode == nullptr){
-                currentAlgo = traversalAlgo::none;
+                currentAction = actionType::none;
             }
             else{
                 visitOrder = dfs(startingNode);
@@ -141,7 +123,7 @@ void runGraphBuilder(sf::RenderWindow& window){
 
         }
 
-        if(currentAlgo == traversalAlgo::reset){
+        if(currentAction == actionType::reset){
             for (auto& node : nodeList){
                 node.get()->changeColor({178, 102, 255});
             }
@@ -149,17 +131,17 @@ void runGraphBuilder(sf::RenderWindow& window){
                 startingNode->changeColor(startingNodeColor);
             }
             currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::none;
+            currentAction = actionType::none;
         }
         
-        if(currentAlgo == traversalAlgo::clear){
+        if(currentAction == actionType::clear){
             nodeList.clear();
             nodeList.shrink_to_fit();
             edges.clear();
             edges.shrink_to_fit();
             startingNode = nullptr;
             currentVisitIndex = 0;
-            currentAlgo = traversalAlgo::none;
+            currentAction = actionType::none;
         }
 
         //create nodes, in graphWindow bounds
@@ -209,9 +191,8 @@ void runGraphBuilder(sf::RenderWindow& window){
 
             }
         }
-        drawGraphBuilder(window, graphWindow, edges, nodeList, buttonList, text);
+        drawGraphBuilder(window, graphWindow, edges, nodeList, actionButtons, text);
     }
 }
-
 
 
