@@ -3,6 +3,9 @@
 #include <thread>
 
 #include "../headers/sortingVisualiser.hpp"
+#include "../headers/button.hpp"
+
+extern const sf::Font font;
 
 void runSortAlgo(sf::RenderWindow& window, const SortingAlgorithm algoToRun){
 
@@ -17,6 +20,14 @@ void runSortAlgo(sf::RenderWindow& window, const SortingAlgorithm algoToRun){
     initialize(arr, arrSize);
     long long unsigned stepIndex = 0;
     steps.emplace_back(arr, 0, 0);
+
+    Button returnButton({100.f, 40.f}, {650.f, 535.f}, "Return");
+
+    sf::Text text(font); // a font is required to make a text object
+    text.setString("Use arrow keys and m1/m2");
+    text.setCharacterSize(24); // in pixels, not points!
+    text.setFillColor({240, 240, 240});
+    text.setPosition({40.f, 550.f});
 
 
     if (algoToRun == SortingAlgorithm::insertionSort) {
@@ -35,20 +46,27 @@ void runSortAlgo(sf::RenderWindow& window, const SortingAlgorithm algoToRun){
                 window.close();
             }
             else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-        {
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Escape){
-                return;
-            }
-        }  
+            {
+                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape){
+                    return;
+                }
+            }  
         }
         //fill display with black
         window.clear(sf::Color(0,0,0));
+
+        //button to return to menu
+        sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+        if(returnButton.clicked(mouse_position)){
+            algorithmIsDone = true;
+        }
         
+        //draw everything
+        window.draw(returnButton);
+        window.draw(text);
         drawRectangles(currentStepStruct, window);
 
-        //display what is set up
-        window.display();
-
+        //controls: arrow left, right, m1, m2
         bool isLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
         if(isLeftPressed && !wasLeftPressed){
             if(stepIndex < steps.size() - 1){
@@ -81,6 +99,7 @@ void runSortAlgo(sf::RenderWindow& window, const SortingAlgorithm algoToRun){
             }
         }
                 
+        window.display();
 
         currentStepStruct = steps.at(stepIndex);
         std::this_thread::sleep_for(std::chrono::milliseconds(10)); 

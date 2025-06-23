@@ -13,34 +13,43 @@ void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){
     std::vector<int> currentStep = currentStepStruct.step;
     int arrSize = currentStep.size();
     int maxValue = arrSize;
-    
-    for (int i = 0; i < arrSize; i++){
-        float windowSizeY = window.getSize().y;
-        float windowSizeX = window.getSize().x;
-        float height = -(windowSizeY/maxValue) * currentStep.at(i);
+    sf::RectangleShape drawWindow({600.f, 500.f}); 
+    drawWindow.setFillColor({30, 30, 46});
+    drawWindow.setPosition({15.f, 15.f});
+    drawWindow.setOutlineThickness(5.f);
+    drawWindow.setOutlineColor({100, 100, 100});
+
+    window.draw(drawWindow); 
+
+    float graphPosX = drawWindow.getPosition().x;
+    float graphPosY = drawWindow.getPosition().y;
+    float graphWidth = drawWindow.getSize().x;
+    float graphHeight = drawWindow.getSize().y;
+
+    float barWidth = graphWidth / static_cast<float>(arrSize);
+
+    for (int i = 0; i < arrSize; i++) {
+        float value = currentStep.at(i);
+        float height = -(graphHeight / maxValue) * value; // negative to grow upward
 
         sf::RectangleShape rectangle;
-        rectangle.setSize({10.f, height});
+        rectangle.setSize({barWidth - 2.f, height}); // slight spacing between bars
 
-
-        if(i == currentStepStruct.keyIndex && i == currentStepStruct.comparatorIndex){
+        // Color logic
+        if (i == currentStepStruct.keyIndex && i == currentStepStruct.comparatorIndex) {
             rectangle.setFillColor(sf::Color::Yellow);
-        }
-        else if(i == currentStepStruct.keyIndex){
+        } else if (i == currentStepStruct.keyIndex) {
             rectangle.setFillColor(sf::Color::Red);
-        } else if(i == currentStepStruct.comparatorIndex){
+        } else if (i == currentStepStruct.comparatorIndex) {
             rectangle.setFillColor(sf::Color::Green);
-        }
-        else{
+        } else {
             rectangle.setFillColor(sf::Color::White);
         }
 
-
-        //this is useless after first call, but I don't feel like doing 2 functions
-        float currentXPosition = (windowSizeX/arrSize) * i + 5.f;
-        float yPosition = static_cast<float>(window.getSize().y);
-        rectangle.setPosition({currentXPosition, yPosition});
-        
+        // Compute X and Y positions relative to graphWindow
+        float x = graphPosX + barWidth * i + 1.f; // +1.f for left padding
+        float y = graphPosY + graphHeight;        // start at bottom of graphWindow
+        rectangle.setPosition({x, y});
 
         window.draw(rectangle);
     }
