@@ -16,9 +16,25 @@ I have implemented the visualisation of the insertion sort and merge sort algori
 
 I implemented a graph builder where the user can place nodes and edges and thereafter run a DFS or BFS on that graph.
 
-# Installation
+# Installation/Build
 
+This project is tested only on Windows. It may not work on Linux/macOS without modifications.
 
+## Requirements
+- WinLibs UCRT 14.2.0 (64-bit) (g++ compiler)
+- SFML 3.0.0 is included in the repository,
+- Windows 10 or later
+
+## vscode
+- Install WinLibs UCRT 14.2.0 (64-bit)
+- Add it to PATH
+- Press F5
+
+## build.bat
+- Install WinLibs UCRT 14.2.0 (64-bit)
+- Add it to PATH
+- Run build.bat
+- Run algoVisualiser.exe
 
 # Code structure
 
