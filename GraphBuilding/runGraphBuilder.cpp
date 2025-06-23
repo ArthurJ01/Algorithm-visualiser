@@ -26,7 +26,6 @@ void runGraphBuilder(sf::RenderWindow& window){
     //defined in types.hpp
     NodeList nodeList;
     EdgeList edges;
-
     ButtonList actionButtons;
 
     graphWindow.setFillColor({30, 30, 46});
@@ -94,6 +93,7 @@ void runGraphBuilder(sf::RenderWindow& window){
             }
         }
 
+        //TODO: run bfs once, then go to drawing state to print the things
         if(currentAction == actionType::bfs){
             if(startingNode == nullptr){
                 currentAction = actionType::none;
