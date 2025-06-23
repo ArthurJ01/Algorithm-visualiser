@@ -12,7 +12,7 @@
 #include "headers/runGraphBuilder.hpp"
 
 enum class Windows {menu, sorting, graph};
-extern const sf::Font font("C:/Windows/fonts/arial.ttf");
+extern const sf::Font font("fonts/arial-font/arial.ttf");
 
 
 int main()
