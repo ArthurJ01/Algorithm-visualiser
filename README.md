@@ -38,7 +38,7 @@ This project is tested only on Windows. It may not work on Linux/macOS without m
 
 # Code structure
 
-The main menu runs in main.cpp. 
+The main menu runs in main.cpp. Gifs of functionality are in the images folder.
 
 ## Sorting algorithms
 The sorting window is run by a function in the sortingAlgorithms/sortingVisualiser.cpp, the sorting algorithms which create the snapshots are in the same folder. When the user presses one of the sorting buttons in the main menu the sorting algorithm is run, and the list of snapshots sent back to be displayed. 
