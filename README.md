@@ -36,6 +36,10 @@ This project is tested only on Windows. It may not work on Linux/macOS without m
 - Run build.bat
 - Run algoVisualiser.exe
 
+## run the release
+
+You can download the pre-built release from the GitHub repository. It should work out of the box on Windows 10 or later.
+
 # Code structure
 
 The main menu runs in main.cpp. Gifs of functionality are in the images folder.
