@@ -8,6 +8,7 @@ sortingAlgorithms/sortingVisualiser.cpp ^
 GraphBuilding/runGraphBuilder.cpp ^
 GraphBuilding/traversal.cpp ^
 draw.cpp initialize.cpp button.cpp GraphBuilding/node.cpp ^
+GraphBuilding/graphInputHandler.cpp ^
 -Iheaders ^
 -I"SFML-3.0.0/include" ^
 -Wall ^
@@ -15,5 +16,5 @@ draw.cpp initialize.cpp button.cpp GraphBuilding/node.cpp ^
 -L"SFML-3.0.0/lib" ^
 -lsfml-graphics -lsfml-window -lsfml-system
 
-echo Done! main.exe is ready.
+echo Done! algoVisualiser.exe is ready.
 pause
