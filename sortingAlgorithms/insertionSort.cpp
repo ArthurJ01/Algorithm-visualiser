@@ -1,5 +1,5 @@
-#include "../headers/sorting.hpp"
-#include "../headers/stepStruct.hpp"
+#include "sorting.hpp"
+#include "stepStruct.hpp"
 #include <vector>
 
 void insertionSort(std::vector<int>& arr, int n, std::vector<stepStruct>& allSteps)

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "../headers/node.hpp"
+#include "node.hpp"
 
 
     Node::Node(const float& nodeSize, const sf::Vector2f& mouse_position)

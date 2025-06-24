@@ -3,13 +3,13 @@
 #include <iostream>
 #include <thread>
 
-#include "headers/sorting.hpp"
-#include "headers/draw.hpp"
-#include "headers/initialize.hpp"
-#include "headers/stepStruct.hpp"
-#include "headers/sortingVisualiser.hpp"
-#include "headers/button.hpp"
-#include "headers/runGraphBuilder.hpp"
+#include "sorting.hpp"
+#include "draw.hpp"
+#include "initialize.hpp"
+#include "stepStruct.hpp"
+#include "sortingVisualiser.hpp"
+#include "button.hpp"
+#include "runGraphBuilder.hpp"
 
 enum class Windows {menu, sorting, graph};
 extern const sf::Font font("fonts/arial-font/arial.ttf");

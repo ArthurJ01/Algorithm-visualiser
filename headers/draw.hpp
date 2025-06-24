@@ -2,8 +2,8 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "./stepStruct.hpp"
-#include "./types.hpp"
+#include "stepStruct.hpp"
+#include "types.hpp"
 
 void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window);
 

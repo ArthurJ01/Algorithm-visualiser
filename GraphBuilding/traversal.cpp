@@ -3,8 +3,8 @@
 #include <queue>
 #include <unordered_set>
 
-#include "../headers/node.hpp"
-#include "../headers/traversal.hpp"
+#include "node.hpp"
+#include "traversal.hpp"
 
 
 std::vector<Node*> dfs(Node* startNode){

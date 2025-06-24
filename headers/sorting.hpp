@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "./stepStruct.hpp"
+#include "stepStruct.hpp"
 
 void insertionSort(std::vector<int>& arr, int n, std::vector<stepStruct>& allSteps);
 void merge(std::vector<int>& arr, int left, int mid, int right, std::vector<stepStruct>& allSteps);

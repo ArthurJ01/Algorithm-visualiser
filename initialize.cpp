@@ -3,7 +3,7 @@
 #include <random>
 #include <chrono>
 
-#include "headers/initialize.hpp"
+#include "initialize.hpp"
 
 void initialize(std::vector<int>& arr, int arrSize){
     //initialise array

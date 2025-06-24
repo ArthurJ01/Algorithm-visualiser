@@ -1,11 +1,11 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "headers/draw.hpp"
-#include "headers/stepStruct.hpp"
-#include "headers/types.hpp"
-#include "headers/node.hpp"
-#include "headers/button.hpp"
+#include "draw.hpp"
+#include "stepStruct.hpp"
+#include "types.hpp"
+#include "node.hpp"
+#include "button.hpp"
 
 //assumes maxValue is the size of array, should be fine for how it's used before
 void drawRectangles(stepStruct currentStepStruct, sf::RenderWindow& window){

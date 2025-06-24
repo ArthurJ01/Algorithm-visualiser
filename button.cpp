@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "headers/button.hpp"
+#include "button.hpp"
 
 extern const sf::Font font;
 

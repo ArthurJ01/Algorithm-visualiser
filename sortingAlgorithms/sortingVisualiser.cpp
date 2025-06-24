@@ -2,8 +2,8 @@
 #include <vector>
 #include <thread>
 
-#include "../headers/sortingVisualiser.hpp"
-#include "../headers/button.hpp"
+#include "sortingVisualiser.hpp"
+#include "button.hpp"
 
 extern const sf::Font font;
 
