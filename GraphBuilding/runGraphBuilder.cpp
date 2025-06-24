@@ -144,6 +144,12 @@ void runGraphBuilder(sf::RenderWindow& window){
             currentAction = actionType::none;
         }
 
+        if(currentAction == actionType::exit){
+            wantToExit = true;
+            currentAction = actionType::none;
+            currentVisitIndex = 0;
+        }
+
         //create nodes, in graphWindow bounds
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hasReleasedM1){
             if(graphWindow.getGlobalBounds().contains(mouse_position)){
